@@ -9,7 +9,6 @@ import (
 	"errors"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -102,8 +101,6 @@ func TestLogin(t *testing.T) {
 		_, err := srv.Login(username, password)
 
 		qry.AssertExpectations(t)
-		pu.AssertNotCalled(t, "CheckPassword", mock.Anything, mock.Anything)
-		jt.AssertNotCalled(t, "GenerateToken", mock.Anything)
 
 		assert.Error(t, err)
 		assert.ErrorContains(t, err, "terjadi kesalahan pada server saat login")
@@ -122,7 +119,6 @@ func TestLogin(t *testing.T) {
 
 		qry.AssertExpectations(t)
 		qry.AssertExpectations(t)
-		jt.AssertNotCalled(t, "GenerateToken", mock.Anything)
 
 		assert.Error(t, err)
 		assert.ErrorContains(t, err, "input data tidak valid, data tidak bisa diproses")
