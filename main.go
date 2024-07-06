@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"news-app-be23/internal/factory"
+
+	"github.com/labstack/echo/v4"
+)
 
 func main() {
-	fmt.Println("hello")
+	e := echo.New()
+	factory.InitFactory(e)
+	e.Logger.Error(e.Start(":5000"))
 }
