@@ -44,7 +44,7 @@ func (us *UserServices) Login(username string, password string) (string, error) 
 	}
 	token, err := us.jt.GenerateToken(result.ID)
 	if err != nil {
-		return "", errors.New("input data tidak valid, data tidak bisa diproses")
+		return "", errors.New("terjadi kesalahan pada saat generate token")
 	}
 	return token, nil
 }
