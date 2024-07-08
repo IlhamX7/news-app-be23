@@ -2,17 +2,20 @@ package repository
 
 import (
 	"news-app-be23/internal/features/articles"
+	"news-app-be23/internal/features/users"
 
 	"gorm.io/gorm"
 )
 
 type Article struct {
 	gorm.Model
-	UserID      uint   `json:"user_id"`
-	Tag         string `json:"tag"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	LinkPhoto   string `json:"link_photo"`
+	UserID      uint           `json:"user_id"`
+	User        users.User     `gorm:"foreignKey:UserID"`
+	Tag         string         `json:"tag"`
+	Title       string         `json:"title"`
+	Description string         `json:"description"`
+	LinkPhoto   string         `json:"link_photo"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 func (a *Article) ToArticleEntity() articles.Article {
