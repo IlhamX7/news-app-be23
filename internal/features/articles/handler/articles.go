@@ -3,6 +3,7 @@ package handler
 import (
 	"news-app-be23/internal/features/articles"
 	"news-app-be23/internal/helper"
+	"news-app-be23/internal/utils"
 	"strconv"
 	"strings"
 
@@ -85,7 +86,14 @@ func (ac *ArticleController) UpdateArticle() echo.HandlerFunc {
 			return c.JSON(400, helper.ResponseFormat(400, "input error", nil))
 		}
 
+		id := c.Param("id")
+		getId, err := utils.StringToUint(id)
+		if err != nil {
+			return c.JSON(400, helper.ResponseFormat(400, "input error", nil))
+		}
+
 		updatedArticle := ToModelArticle(input)
+		updatedArticle.ID = getId
 		err = ac.srv.UpdateArticle(updatedArticle)
 		if err != nil {
 			errCode := 500
