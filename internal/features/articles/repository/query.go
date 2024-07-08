@@ -22,13 +22,13 @@ func (am *ArticleModel) InsertArticle(newArticle articles.Article) error {
 
 func (am *ArticleModel) GetAllArticles() ([]articles.Article, error) {
 	var articleList []articles.Article
-	err := am.db.Find(&articleList).Error
+	err := am.db.Where("deleted_at IS NULL").Find(&articleList).Error
 	return articleList, err
 }
 
 func (am *ArticleModel) GetArticleByID(id uint) (*articles.Article, error) {
 	var article articles.Article
-	err := am.db.First(&article, id).Error
+	err := am.db.Where("id = ? AND deleted_at IS NULL", id).First(&article).Error
 	return &article, err
 }
 
