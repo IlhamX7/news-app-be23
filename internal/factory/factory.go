@@ -6,6 +6,9 @@ import (
 	articleHandler "news-app-be23/internal/features/articles/handler"
 	articleRepository "news-app-be23/internal/features/articles/repository"
 	articleServices "news-app-be23/internal/features/articles/services"
+	commentHandler "news-app-be23/internal/features/comments/handler"
+	commentRepository "news-app-be23/internal/features/comments/repository"
+	commentServices "news-app-be23/internal/features/comments/services"
 	userHandler "news-app-be23/internal/features/users/handler"
 	userRepository "news-app-be23/internal/features/users/repository"
 	userServices "news-app-be23/internal/features/users/services"
@@ -22,7 +25,7 @@ func InitFactory(e *echo.Echo) {
 	if err != nil {
 		fmt.Println("Stop program, masalah pada database", err.Error())
 	}
-	if err := db.AutoMigrate(&userRepository.User{}, &articleRepository.Article{}); err != nil {
+	if err := db.AutoMigrate(&userRepository.User{}, &articleRepository.Article{}, &commentRepository.Comment{}); err != nil {
 		fmt.Println("Ada yg bermasalah saat memasukan table user", err.Error())
 	}
 
@@ -37,8 +40,12 @@ func InitFactory(e *echo.Echo) {
 	as := articleServices.NewArticleService(am)
 	ac := articleHandler.NewArticleController(as)
 
+	cm := commentRepository.NewCommentModel(db)
+	cs := commentServices.NewCommentService(cm)
+	cc := commentHandler.NewCommentController(cs)
+
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 
-	routes.InitRoute(e, uc, ac)
+	routes.InitRoute(e, uc, ac, cc)
 }

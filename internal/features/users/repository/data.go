@@ -2,6 +2,7 @@ package repository
 
 import (
 	"news-app-be23/internal/features/articles"
+	"news-app-be23/internal/features/comments"
 	"news-app-be23/internal/features/users"
 
 	"gorm.io/gorm"
@@ -13,6 +14,7 @@ type User struct {
 	Password string             `json:"password"`
 	Email    string             `json:"email"`
 	Articles []articles.Article `gorm:"foreignKey:UserID"`
+	Comments []comments.Comment `gorm:"foreignKey:UserID"`
 }
 
 func (u *User) toUserEntity() users.User {
