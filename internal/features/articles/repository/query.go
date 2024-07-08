@@ -2,6 +2,7 @@ package repository
 
 import (
 	"news-app-be23/internal/features/articles"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -37,5 +38,12 @@ func (am *ArticleModel) UpdateArticle(updatedArticle articles.Article) error {
 }
 
 func (am *ArticleModel) DeleteArticle(id uint) error {
-	return am.db.Delete(&articles.Article{}, id).Error // Soft delete
+	var article articles.Article
+	err := am.db.First(&article, id).Error
+	if err != nil {
+		return err
+	}
+	now := time.Now()
+	article.DeletedAt = &now
+	return am.db.Save(&article).Error // Soft delete
 }

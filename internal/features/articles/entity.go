@@ -1,6 +1,10 @@
 package articles
 
-import "github.com/labstack/echo/v4"
+import (
+	"time"
+
+	"github.com/labstack/echo/v4"
+)
 
 type Article struct {
 	ID          uint
@@ -9,6 +13,7 @@ type Article struct {
 	Title       string
 	Description string
 	LinkPhoto   string
+	DeletedAt   *time.Time `sql:"index"`
 }
 
 type Handler interface {
