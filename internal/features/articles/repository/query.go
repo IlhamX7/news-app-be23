@@ -37,5 +37,5 @@ func (am *ArticleModel) UpdateArticle(updatedArticle articles.Article) error {
 }
 
 func (am *ArticleModel) DeleteArticle(id uint) error {
-	return am.db.Delete(&articles.Article{}, id).Error // Soft delete
+	return am.db.Delete(&Article{}, id).Error
 }
