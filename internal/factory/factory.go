@@ -1,14 +1,15 @@
 package factory
 
 import (
+	"fmt"
 	"news-app-be23/configs"
+	articleHandler "news-app-be23/internal/features/articles/handler"
+	articleRepository "news-app-be23/internal/features/articles/repository"
+	articleServices "news-app-be23/internal/features/articles/services"
 	userHandler "news-app-be23/internal/features/users/handler"
 	userRepository "news-app-be23/internal/features/users/repository"
 	userServices "news-app-be23/internal/features/users/services"
-
-	"fmt"
 	"news-app-be23/internal/routes"
-
 	"news-app-be23/internal/utils"
 
 	"github.com/labstack/echo/v4"
@@ -21,7 +22,7 @@ func InitFactory(e *echo.Echo) {
 	if err != nil {
 		fmt.Println("Stop program, masalah pada database", err.Error())
 	}
-	if err := db.AutoMigrate(&userRepository.User{}); err != nil {
+	if err := db.AutoMigrate(&userRepository.User{}, &articleRepository.Article{}); err != nil {
 		fmt.Println("Ada yg bermasalah saat memasukan table user", err.Error())
 	}
 
@@ -32,8 +33,12 @@ func InitFactory(e *echo.Echo) {
 	us := userServices.NewUserService(um, pu, jt)
 	uc := userHandler.NewUserController(us)
 
+	am := articleRepository.NewArticleModel(db)
+	as := articleServices.NewArticleService(am)
+	ac := articleHandler.NewArticleController(as)
+
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 
-	routes.InitRoute(e, uc)
+	routes.InitRoute(e, uc, ac)
 }
