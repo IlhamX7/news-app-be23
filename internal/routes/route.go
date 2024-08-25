@@ -1,9 +1,6 @@
 package routes
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
@@ -22,10 +19,11 @@ func InitRoute(e *echo.Echo, uc users.Handler, ac articles.Handler, cc comments.
 	e.POST("/login", uc.Login())
 
 	// JWT Middleware
-	jwtKey := os.Getenv("JWT_SECRET")
-	if jwtKey == "" {
-		fmt.Println("JWT_SECRET environment variable not set")
-	}
+	// jwtKey := os.Getenv("JWT_SECRET")
+	// if jwtKey == "" {
+	// 	fmt.Println("JWT_SECRET environment variable not set")
+	// }
+	jwtKey := "passkeyJWT"
 
 	articleGroup := e.Group("/articles")
 	articleGroup.Use(echojwt.WithConfig(echojwt.Config{
