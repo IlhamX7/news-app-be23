@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -18,11 +20,10 @@ func NewJwtUtility() JwtUtilityInterface {
 }
 
 func (jt *jwtUtility) GenerateToken(userID uint) (string, error) {
-	// jwtKey := os.Getenv("JWT_SECRET")
-	// if jwtKey == "" {
-	// 	return "", fmt.Errorf("JWT secret key not found in environment variables")
-	// }
-	jwtKey := "passkeyJWT"
+	jwtKey := os.Getenv("JWT_SECRET")
+	if jwtKey == "" {
+		return "", fmt.Errorf("JWT secret key not found in environment variables")
+	}
 
 	var claims = jwt.MapClaims{}
 	claims["id"] = userID

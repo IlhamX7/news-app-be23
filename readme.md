@@ -76,3 +76,17 @@ testing api, for example:
 http://localhost:5000/login
 click send
 ```
+
+## Run unit testing:
+```
+mockery --all
+go test ./... --coverprofile cover.out
+go tool cover -func cover.out
+```
+
+## Reference:
+```
+1. Guidebook - https://docs.google.com/document/d/1SbrdnPwFJN2d1D4un4KPvUVNv3DA6grz8NrWjxwjP-I/edit?usp=sharing
+
+2. Recording - https://docs.google.com/document/d/17JqC_bZ5HejjLzr8f2TSx6-nW55Wfo72fP6LSd_O31s/edit?usp=sharing
+```
